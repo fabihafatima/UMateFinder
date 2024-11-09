@@ -9,15 +9,15 @@ def create_app():
     app = Flask(__name__)
 
     # Load configuration from `config.py` or environment variables
-    app.config["MONGO_URI"] = os.getenv("MONGO_URI", "mongodb://localhost:27017/mydatabase")
+    app.config["MONGO_URI"] = os.getenv("MONGO_URI", "mongodb+srv://fabihafatima9:0gg8l7BVGxN8Q3oz@proddb.qs2us.mongodb.net/?retryWrites=true&w=majority&appName=prodDB")
     
     # Initialize PyMongo with app
     mongo.init_app(app)
 
     # Define basic routes (API endpoints)
 
-    @app.route('/items', methods=['GET'])
-    def get_items():
+    @app.route('/userPreferences', methods=['GET'])
+    def get_preferences():
         # Fetch all items from MongoDB
         items = list(mongo.db.items.find({}, {"_id": 0}))
         return jsonify(items), 200

@@ -23,6 +23,8 @@ def create_app():
     # user_login_collection = db.user_login_data
 
     from .routes import user_bp
+    from .routes import preference_bp
     app.register_blueprint(user_bp)
+    app.register_blueprint(preference_bp)
 
     return app

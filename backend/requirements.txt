@@ -1,0 +1,7 @@
+Flask==2.3.2                # Core Flask library
+pymongo==4.5.0              # MongoDB client for Python
+flask-pymongo==2.3.0        # Simplified Flask integration with PyMongo
+Flask-Bcrypt==1.0.1         # For password hashing
+Flask-Cors==3.0.10          # For handling CORS (if needed)
+dnspython==2.3.0            # For connecting to MongoDB Atlas (if using Atlas)
+python-dotenv==1.0.0        # For loading environment variables from a .env file (if needed)

@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify, current_app
 
 user_bp = Blueprint('user_bp', __name__, url_prefix='/user')
 
-#Add password and email validation and add return only email and password
 # @user_bp.route('/<string:email>', methods=['GET'])
 # def get_user(email):
 #     db = current_app.config["db"]
@@ -45,6 +44,33 @@ def insert_user():
     user_id = users_collection.insert_one(data).inserted_id
     return jsonify({"message": "You have been Signed Up!"}), 200
 
+@user_bp.route('/favourites', methods=['POST'])
+def get_favourite_user():
+    db = current_app.config["db"]
+    users_collection = db.user_profile_data 
+    required_fields = ["user_email","fav_email","add_fav"]  # Define required fields as needed
+    data = request.json
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"{field} is required"}), 400
+    if(data.get("add_fav")=="True"):
+        result = users_collection.update_one(
+                {"email": data.get("user_email")},
+                {"$addToSet": {"favouriteRoommates": data.get("fav_email")}},
+                upsert=True
+            )
+        if result.matched_count == 0:
+            return jsonify({"message": "No matching document found"}), 404
+        return jsonify({"message": "Favourite Added!"}), 200
+    else:
+        result = users_collection.update_one(
+            {"email": data.get("user_email")},
+            {"$pull": {"favouriteRoommates": data.get("fav_email")}}
+        )
+        if result.matched_count == 0:
+            return jsonify({"message": "No matching document found"}), 404
+        return jsonify({"message": "Favourite Deleted!"}), 200
 
 # curl -X POST -H "Content-Type: application/json" -d '{"name": "Naman","email": "nmn@getmearoommate.com", "password": "abcd","phone":"1772756941","degree":"Master’s","dob":"1999-10-06","gender":"male","major":"Economics"}' http://127.0.0.1:5000/user/insert
 # curl -X POST -H "Content-Type: application/json" -d '{"email": "mustafa@getmearoommate.com", "password": "test@123"}' http://127.0.0.1:5000/user/validate
+# curl -X POST -H "Content-Type: application/json" -d '{"user_email": "admin@umass.edu", "fav_email": "patrick@getmearoommate.com","add_fav": "False"}' http://127.0.0.1:5000/user/favourites

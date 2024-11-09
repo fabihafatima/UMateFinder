@@ -105,7 +105,7 @@ const SignUp = () => {
 
   return (
     <div className="container mt-4" style={{ maxWidth: '600px' }}>
-      <h2>Start Your Journey with UMate Finder!</h2>
+      <h2>Start Your Journey!</h2>
       <form onSubmit={handleRegister}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Name</label>
@@ -256,7 +256,7 @@ const SignUp = () => {
           />
           {formErrors.confirmPassword && <small className="text-danger">{formErrors.confirmPassword}</small>}
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary custom-filled-btn">
           Register
         </button>
       </form>

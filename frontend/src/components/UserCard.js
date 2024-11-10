@@ -46,7 +46,7 @@ const UserCard = ({ user, markAsFavourite, onChat, handleViewProfile  }) => {
           {gender} . <span className="info-start">Starting {startDate}</span>
         </p>
         <p>{title}</p>
-        <p>Living Preferences: {locations.join(", ")}</p>
+        <p>Living Preferences: {locations && locations.join(", ")}</p>
       </div>
 
       {/* Third section - Action Buttons */}

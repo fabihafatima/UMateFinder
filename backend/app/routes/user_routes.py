@@ -1,20 +1,7 @@
 from flask import Blueprint, request, jsonify, current_app
+# import json
 
 user_bp = Blueprint('user_bp', __name__, url_prefix='/user')
-
-# @user_bp.route('/<string:email>', methods=['GET'])
-# def get_user(email):
-#     db = current_app.config["db"]
-#     users_collection = db.user_login_data 
-#     user_details = users_collection.find_one({"email": email})
-#     if not user_details:
-#         return jsonify({"error": "User not found"}), 404
-#     user_details["_id"] = str(user_details["_id"])
-#     user_response = {}
-#     for field in user_details:
-#         if field=="email" or field=="password":
-#             user_response[field] = user_details[field]
-#     return jsonify(user_response), 200
 
 # Login
 @user_bp.route('/validate', methods=['POST'])
@@ -103,8 +90,41 @@ def get_roommate_names():
         fav_names_data["drink"] = roommate_profile_data["drink"]
         fav_names_data["smoke"] = roommate_profile_data["smoke"]
         fav_names_data["email"] = roommate_profile_data["email"]
+        fav_names_data["photoUrl"] = roommate_profile_data["photoUrl"]
         final_data.append(fav_names_data)
     return jsonify(final_data), 200
+
+# Update a collection with a particular field
+# @user_bp.route('/update_collection', methods=['POST'])
+# def update_collection():
+#     try:
+#         # Read and parse the JSON file
+#         with open('/Users/devyanigoil/Documents/HackUmass/UMateFinder/backend/app/routes/profile_url.json') as file:
+#             data = json.load(file)
+#         db = current_app.config["db"]
+#         test_collection = db["user_profile_data"]
+
+#         # updates = []
+#         for record in data:
+#             if 'email' not in record or 'photoUrl' not in record:
+#                 continue  # Skip invalid records
+
+#             # Update MongoDB collection based on the email primary key
+#             result = test_collection.update_one(
+#                 {'email': record['email']},
+#                 {'$set': {'photoUrl': record['photoUrl']}},
+#                 upsert=True  # Creates a new record if no match is found
+#             )
+#             # updates.append({
+#             #     'email': record['email'],
+#             #     'matched_count': result.matched_count,
+#             #     'modified_count': result.modified_count,
+#             #     'upserted_id': str(result.upserted_id) if result.upserted_id else None
+#             # })
+
+#         return jsonify({'message': 'Updated!!!!!!!'}), 200
+#     except Exception as e:
+#         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 # curl -X POST -H "Content-Type: application/json" -d '{"name": "Naman","email": "nmn@getmearoommate.com", "password": "abcd","phone":"1772756941","degree":"Master’s","dob":"1999-10-06","gender":"male","major":"Economics"}' http://127.0.0.1:5000/user/insert
 # curl -X POST -H "Content-Type: application/json" -d '{"email": "mustafa@getmearoommate.com", "password": "test@123"}' http://127.0.0.1:5000/user/validate
@@ -112,3 +132,4 @@ def get_roommate_names():
 # curl -X GET -H "Content-Type: application/json" http://127.0.0.1:5000/all_users/data
 # curl -X GET -H "Content-Type: application/json" -d '{"email": "admin@umass.edu"}' http://127.0.0.1:5000/user/favourite_roommates
 # curl -X GET -H "Content-Type: application/json" -d '{"email": "nancy@getmearoommate.com"}' http://127.0.0.1:5000/user/favourite_roommates
+# curl -X POST -H "Content-Type: application/json" http://127.0.0.1:5000/user/update_collection

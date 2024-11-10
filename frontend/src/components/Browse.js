@@ -99,11 +99,7 @@ const Browse = (props) => {
       .catch((error) => console.error("Error fetching other potential mates:", error));
   }, []);
 
-  useEffect(() => {
-    console.log("Changed users")
-    const user = users && users.find(user => user.email === "timothy@getmearoommate.com");
-    console.log(user)
-  },[users])
+
 
   return (
     <>

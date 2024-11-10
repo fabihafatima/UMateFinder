@@ -5,7 +5,6 @@ user_bp = Blueprint('user_bp', __name__, url_prefix='/user')
 
 # Login
 @user_bp.route('/validate', methods=['POST'])
-# @cors_original()
 def validate_user():
     db = current_app.config["db"]
     users_collection = db.user_login_data

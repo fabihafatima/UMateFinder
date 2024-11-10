@@ -46,7 +46,7 @@ const Navbar = ({
     e.preventDefault();
     try {
       // Sending login data to the backend
-        const response = await axios.post('http://localhost:5000/user/validate', {
+        const response = await axios.post('http://localhost:5050/user/validate', {
           email: userId,
           password: password
         });

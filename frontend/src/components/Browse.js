@@ -37,7 +37,7 @@ const Browse = (props) => {
     };
 
     axios
-      .post("http://localhost:5000/user/favourites", payload)
+      .post("http://localhost:5050/user/favourites", payload)
       .then((response) => {
         if (response.status === 200) {
           if (param === "1") {
@@ -67,7 +67,7 @@ const Browse = (props) => {
 
   const handleViewProfile = async (email) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/user-details/${email}`);
+      const response = await fetch(`http://127.0.0.1:5050/user-details/${email}`);
       const data = await response.json();
       setSelectedUser(data); // Update userData with the response
       setModalShow(true); // Show the modal
@@ -80,7 +80,7 @@ const Browse = (props) => {
   useEffect(() => {
     // Fetching top roommates from API
     axios
-      .get("http://127.0.0.1:5000/rs/top-match", {
+      .get("http://127.0.0.1:5050/rs/top-match", {
         params: { email: props.userId },
       })
       .then((response) => {
@@ -90,7 +90,7 @@ const Browse = (props) => {
 
     // Fetching user data from local JSON
     axios
-      .get("http://127.0.0.1:5000/rs/other-mates", {
+      .get("http://127.0.0.1:5050/rs/other-mates", {
         params: { email: props.userId },
       })
       .then((response) => {

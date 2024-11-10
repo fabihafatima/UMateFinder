@@ -30,7 +30,7 @@ const Profile = (props) => {
       // Replace with your API endpoint and include email as a query parameter
       axios
         .get(
-          `http://127.0.0.1:5000/user/favourite-roommates?email=${props.userData.email}`
+          `http://127.0.0.1:5050/user/favourite-roommates?email=${props.userData.email}`
         )
         .then((response) => {
           setFavouriteRoommates(response.data); // Assuming API response has `roommates` array
@@ -44,7 +44,7 @@ const Profile = (props) => {
   const handleSaveProfile = (updatedData) => {
     // You can make an API call here to update the user data in the backend
     axios
-      .put(`http://127.0.0.1:5000/user/update`, updatedData)
+      .put(`http://127.0.0.1:5050/user/update`, updatedData)
       .then((response) => {
         console.log("Profile updated successfully:", response.data);
         setUserData(updatedData); // Update the local state with new data

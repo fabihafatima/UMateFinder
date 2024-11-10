@@ -20,7 +20,7 @@ const App = () => {
     if (userId) {
       const fetchUserData = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:5000/user-details/${userId}`);
+          const response = await fetch(`http://127.0.0.1:5050/user-details/${userId}`);
           const data = await response.json();
           setUserData(data); // Update userData with the response
         } catch (error) {

@@ -55,7 +55,7 @@ def post_preferences():
         profile_fields = [
             "email", "courseDuration", "homeTown", "dietaryPreference",
             "drink", "smoke", "cleanliness", "budget", "identification", "socialMedia", "hobbies",
-            "cook", "preference", "profileImages", "favouriteRoommates", "isRoommateFound", "startDate", "endDate"
+            "cook", "preference", "profileImages", "favouriteRoommates", "isRoommateFound", "startDate", "endDate", 
         ]
         profile_data = {key: data[key] for key in profile_fields if key in data}
 

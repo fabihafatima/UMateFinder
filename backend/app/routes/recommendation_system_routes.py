@@ -5,14 +5,14 @@ rs_bp = Blueprint('rs_bp', __name__, url_prefix='/rs')
 
 def format_date(date_str):
     """
-    Converts a date string from 'YYYY-MM-DD' to 'MMM-YYYY' format.
+    Converts a date string from 'YYYY-MM-DD' to 'MMM YYYY' format.
     If the input is invalid or empty, returns an empty string.
     """
     try:
         date = datetime.strptime(date_str, "%Y-%m-%d")
-        return date.strftime("%b-%Y")
+        return date.strftime("%b %Y")
     except (ValueError, TypeError):
-        return ""  # Return empty string if the date format is incorrect or missing
+        return "" 
 
 @rs_bp.route('/top-match', methods=['GET'])
 def get_top_matches():
@@ -55,7 +55,7 @@ def get_top_matches():
             # Fetch the profile data of each recommended roommate
             roommate_profile = profile_collection.find_one(
                 {"email": roommate_email},
-                { "email": 1, "age": 1, "startDate": 1, "title": 1, "preference.location": 1}
+                { "email": 1, "age": 1, "startDate": 1, "title": 1, "preference.location": 1, "photoUrl":1}
             )
             if roommate_profile:
                 formatted_start_date = format_date(roommate_profile.get("startDate", ""))
@@ -74,7 +74,8 @@ def get_top_matches():
                         "title": roommate_profile.get("title", ""),
                         "location": roommate_profile.get("preference", {}).get("location", []),
                         "gender": roommate_login.get("gender", "other"),
-                        "isFav": roommate_email in favourite_roommates
+                        "isFav": roommate_email in favourite_roommates,
+                        "photoUrl": roommate_profile.get("photoUrl", ""),
                     }
                     matched_roommates.append(matched_roommate)
 

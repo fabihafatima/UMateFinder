@@ -4,18 +4,26 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import {
+  faPenToSquare,
   faSquareCheck,
   faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Col } from "react-bootstrap";
+import { Button, Col } from "react-bootstrap";
+import PreferenceUpdateModal from "./PreferenceUpdateModal";
 import "./Profile.css";
+import ProfileUpdateModal from "./ProfileUpdateModal";
 import UserCard from "./UserCard";
 
 const Profile = (props) => {
   const [favouriteRoommates, setFavouriteRoommates] = useState([]);
+  const [showModal, setShowModal] = useState(false); // State for modal visibility
+  const [showPreferenceModal, setShowPreferenceModal] = useState(false); // State for modal visibility
+
+  const [userData, setUserData] = useState(props.userData); // Store the user data
+
   useEffect(() => {
     // Check if props.userData and email are available before calling the API
     if (props.userData && props.userData.email) {
@@ -32,6 +40,19 @@ const Profile = (props) => {
         });
     }
   }, [props.userData]);
+
+  const handleSaveProfile = (updatedData) => {
+    // You can make an API call here to update the user data in the backend
+    axios
+      .put(`http://127.0.0.1:5000/user/update`, updatedData)
+      .then((response) => {
+        console.log("Profile updated successfully:", response.data);
+        setUserData(updatedData); // Update the local state with new data
+      })
+      .catch((error) => {
+        console.error("Error updating profile:", error);
+      });
+  };
 
   return (
     <div className="user-profile">
@@ -64,6 +85,7 @@ const Profile = (props) => {
                         ? faTwitter
                         : null
                     }
+                    style={{ color: "black" }}
                     className="fa-2x"
                   />
                 </a>
@@ -72,7 +94,7 @@ const Profile = (props) => {
         </div>
         <div className="basic-info-div">
           <div className="middle-div">
-            <h2>{props.userData.title}</h2>
+            <h3>{props.userData.title}</h3>
             <p>
               {props.userData.age} years old | {props.userData.gender}
             </p>
@@ -86,15 +108,39 @@ const Profile = (props) => {
             <br />
             <div>
               <p>
-                {props.userData.isRoommateFound
-                  ? "You’ve found a roommate!"
-                  : "Still on the hunt!"}
+                <span>
+                  {props.userData.isRoommateFound
+                    ? "You’ve found a roommate!"
+                    : "Still on the hunt!"}
+                </span>
               </p>
             </div>
           </div>
+          <ProfileUpdateModal
+            showModal={showModal}
+            handleClose={() => setShowModal(false)} // Close the modal
+            userData={userData}
+            handleSave={handleSaveProfile} // Pass the save handler
+          />
           <div className="separator"></div>
           <section>
-            <h3>More info:</h3>
+            <div className="user-info-update">
+              <h4>More info: </h4>
+              {props.mode === "edit" ? (
+                <span>
+                  <Button
+                    className="custom-filled-btn"
+                    variant="outline-primary"
+                    onClick={() => setShowModal(true)} // Open the modal
+                  >
+                    Update Profile
+                  </Button>
+                </span>
+              ) : (
+                <></>
+              )}
+            </div>
+            <hr></hr>
             <p>
               <strong>Budget:</strong> ${props.userData.budget}/month
             </p>
@@ -106,8 +152,8 @@ const Profile = (props) => {
               {props.userData.dietaryPreference}
             </p>
             <p>
-              <span>
-                <strong>Drink:</strong>{" "}
+              <div className="drink-smoke-div"><span>
+                <strong>Drinks:</strong>{" "}
                 {props.userData.drink ? (
                   <FontAwesomeIcon icon={faSquareCheck} />
                 ) : (
@@ -115,13 +161,14 @@ const Profile = (props) => {
                 )}
               </span>
               <span>
-                <strong>Smoke:</strong>{" "}
+                <strong>Smokes:</strong>{" "}
                 {props.userData.smoke ? (
                   <FontAwesomeIcon icon={faSquareCheck} />
                 ) : (
                   <FontAwesomeIcon icon={faSquareXmark} />
                 )}
-              </span>
+              </span></div>
+              
             </p>
             <p>
               <strong>Hobbies:</strong>{" "}
@@ -134,9 +181,36 @@ const Profile = (props) => {
         </div>
       </div>
 
-      <div className="potential-roommate-section">
+      <div
+        className={
+          props.mode === "view"
+            ? "potential-roommate-section-view"
+            : "potential-roommate-section"
+        }
+      >
         <section className="preferences-section">
-          <h5>Potential Roommate Preferences</h5>
+          <div className="preference-section-heading">
+            <h4 className="preference-heading">
+              <strong>Roommate Preferences</strong>
+            </h4>
+            {props.mode === "edit" ? (
+              <Button
+                className="custom-update-btn"
+                variant="outline-primary"
+                onClick={() => setShowPreferenceModal(true)} // Open the modal
+              >
+                <FontAwesomeIcon icon={faPenToSquare} />{" "}
+              </Button>
+            ) : (
+              <></>
+            )}
+          </div>
+          <PreferenceUpdateModal
+            showModal={showPreferenceModal}
+            handleClose={() => setShowPreferenceModal(false)} // Close the modal
+            userData={userData}
+            handleSave={handleSaveProfile} // Pass the save handler
+          />
           {props.userData.preference ? (
             <>
               <p>
@@ -160,20 +234,26 @@ const Profile = (props) => {
                 {props.userData.preference.roomPreference}
               </p>
               <p>
-                <strong>Open to Drink:</strong>{" "}
-                {props.userData.preference.openToDrink ? (
-                  <FontAwesomeIcon icon={faSquareCheck} />
-                ) : (
-                  <FontAwesomeIcon icon={faSquareXmark} />
-                )}
-              </p>
-              <p>
-                <strong>Open to Smoke:</strong>{" "}
-                {props.userData.preference.openToSmoke ? (
-                  <FontAwesomeIcon icon={faSquareCheck} />
-                ) : (
-                  <FontAwesomeIcon icon={faSquareXmark} />
-                )}
+                <strong>Open to: </strong>{" "}
+                <div className="drink-smoke-div">
+                <span>
+                  Drinking{" "}
+                  {props.userData.preference.openToDrink ? (
+                    <FontAwesomeIcon icon={faSquareCheck} />
+                  ) : (
+                    <FontAwesomeIcon icon={faSquareXmark} />
+                  )}
+                </span>
+                <span>
+                  Smoking{" "}
+                  {props.userData.preference.openToSmoke ? (
+                    <FontAwesomeIcon icon={faSquareCheck} />
+                  ) : (
+                    <FontAwesomeIcon icon={faSquareXmark} />
+                  )}
+                </span>
+                </div>
+                
               </p>
             </>
           ) : (
@@ -182,7 +262,10 @@ const Profile = (props) => {
         </section>
         {props.mode === "edit" ? (
           <section className="favourites-section">
-            <h3>My Favourites</h3>
+            <div className="favourites-section-heading">
+              <h4>My Favourites</h4>
+            </div>
+
             {favouriteRoommates.length > 0 ? (
               favouriteRoommates.map((user, index) => (
                 <Col key={user.name} md={12} className="mb-4">

@@ -162,7 +162,10 @@ const Browse = (props) => {
             {users ? (
               <UserList users={users} markAsFavourite={markAsFavourite} handleViewProfile={handleViewProfile}/>
             ) : (
+              <div className="loading-users-div">
               <p>Loading users...</p>
+
+              </div>
             )}
           </section>
         </>

@@ -26,6 +26,9 @@ const UserCard = ({ user, mode, markAsFavourite, handleViewProfile , onChat }) =
     photoUrl
   } = user;
 
+  console.log(markAsFavourite);
+
+
   return (
     <div className="user-card" style={styles.card}>
       {/* First section - Photo */}

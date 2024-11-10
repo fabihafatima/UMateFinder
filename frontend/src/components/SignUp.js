@@ -152,7 +152,7 @@ const SignUp = (props) => {
             </select>
             {formErrors.degree && <small className="text-danger">{formErrors.degree}</small>}
           </div>
-          <div className="col">
+          {/* <div className="col">
             <label htmlFor="yearOfStudy" className="form-label">Year of Study</label>
             <select
               className="form-control"
@@ -166,7 +166,7 @@ const SignUp = (props) => {
               ))}
             </select>
             {formErrors.yearOfStudy && <small className="text-danger">{formErrors.yearOfStudy}</small>}
-          </div>
+          </div> */}
           <div className="col">
             <label htmlFor="major" className="form-label">Major</label>
             <input

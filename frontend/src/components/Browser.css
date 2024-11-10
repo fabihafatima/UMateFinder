@@ -120,3 +120,7 @@ table tbody tr{
 .user-card-col {
   padding: 0px;
 }
+
+.loading-users-div {
+  align-items: center;
+}

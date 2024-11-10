@@ -5,6 +5,7 @@ import { Modal, Button } from "react-bootstrap";
 import "./Navbar.css";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import Alert from 'react-bootstrap/Alert';
 
 const Navbar = ({
   isLoggedIn,
@@ -29,6 +30,7 @@ const Navbar = ({
     setPassword("");
     setIsEmailValid(true);
     setTouched(false);
+    setErrorMessage("")
   };
 
   const handleEmailChange = (e) => {
@@ -91,6 +93,7 @@ const Navbar = ({
     setIsEmailValid(true);
     setTouched(false);
     navigate("/");
+    setErrorMessage("")
   }
 
   return (
@@ -157,6 +160,9 @@ const Navbar = ({
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {errorMessage!=""?<><Alert variant="danger">
+      {errorMessage}
+    </Alert></>:<></> }
           <form onSubmit={handleLogin}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">

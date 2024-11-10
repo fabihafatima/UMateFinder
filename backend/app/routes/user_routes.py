@@ -5,6 +5,7 @@ user_bp = Blueprint('user_bp', __name__, url_prefix='/user')
 
 # Login
 @user_bp.route('/validate', methods=['POST'])
+# @cors_original()
 def validate_user():
     db = current_app.config["db"]
     users_collection = db.user_login_data
@@ -77,8 +78,8 @@ def get_roommate_names():
     user_details = users_profiles.find_one({"email": email})
 
     final_data=[]
-    fav_names_data = {}
     for item in user_details["favouriteRoommates"]:
+        fav_names_data = {}
         roommate_login_data = users_login.find_one({"email": item})
         fav_names_data["name"] = roommate_login_data["name"]
         fav_names_data["gender"] = roommate_login_data["gender"]

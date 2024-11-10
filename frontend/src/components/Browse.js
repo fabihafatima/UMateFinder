@@ -1,114 +1,186 @@
 import React, { useEffect, useState } from "react";
-import "./Browser.css"; // You can style the loader here
-import TableWithPagination from "./TableWithPagination";
-import { Button } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as faStarSolid, faMessage, faEye } from '@fortawesome/free-solid-svg-icons';
-import { faStar as faStarRegular} from '@fortawesome/free-regular-svg-icons';
-import AdvancedFilterGrid from './AdvancedFilterGrid';
+import axios from "axios";
+import "./Browser.css";
+import { Button, Modal } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faStar as faStarSolid,
+  faMessage,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import UserList from "./UserList";
+import Profile from "./Profile"; // Import the Profile component
 
 const Browse = (props) => {
-  const [topRoommates, setTopRoommates] = useState([
-    {
-      userName: "Emma Johnson",
-      age: "24",
-      description: "Avid traveler with a knack for capturing sunsets.",
-      img: "/images/s-img-1.jpg",
-    },
-    {
-      userName: "Liam Smith",
-      age: "18",
-      description: "Coffee enthusiast and aspiring novelist.",
-      img: "/images/s-img-2.jpg",
-    },
-    {
-      userName: "Olivia Brown",
-      age: "34",
-      description: "Yoga instructor who loves sharing wellness tips.",
-      img: "/images/s-img-3.jpg",
-    },
-    {
-      userName: "Noah Davis",
-      age: "23",
-      description: "Software developer with a passion for hiking.",
-      img: "/images/s-img-4.jpg",
-    },
-    {
-      userName: "Sophia Garcia",
-      age: "22",
-      description: "Baker and culinary experimenter at heart.",
-      img: "/images/s-img-5.jpg",
-    },
-]
-);
+  const [topRoommates, setTopRoommates] = useState([]);
+  const [users, setUsers] = useState();
+  const [modalShow, setModalShow] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-const columns = [
-  { headerName: 'Name', field: 'name', filter: 'agTextColumnFilter' },
-  { headerName: 'Course Duration', field: 'courseDuration', filter: 'agTextColumnFilter' },
-  { headerName: 'Home Town', field: 'homeTown', filter: 'agTextColumnFilter' },
-  { headerName: 'Dietary Preference', field: 'dietaryPreference', filter: 'agTextColumnFilter' },
-  { headerName: 'Drink', field: 'drink', filter: 'agTextColumnFilter' },
-  { headerName: 'Smoke', field: 'smoke', filter: 'agTextColumnFilter' },
-  { headerName: 'Cleanliness', field: 'cleanliness', filter: 'agNumberColumnFilter' },
-  { headerName: 'Budget', field: 'budget', filter: 'agNumberColumnFilter' },
-  { headerName: 'Identification', field: 'identification', filter: 'agTextColumnFilter' },
-  { headerName: 'Cook', field: 'cook', filter: 'agTextColumnFilter' },
-  { headerName: 'Age', field: 'age', filter: 'agNumberColumnFilter' },
-  { headerName: 'Degree', field: 'degree', filter: 'agTextColumnFilter' },
-  { headerName: 'Major', field: 'major', filter: 'agTextColumnFilter' },
-  { headerName: 'Gender', field: 'gender', filter: 'agTextColumnFilter' }
-];
+  const markAsFavourite = (email, param) => {
+    console.log("entered");
+    let roommate;
+    if (param === "1") {
+      roommate = topRoommates.find((r) => r.email === email);
+    } else {
+      roommate = users.find((r) => r.name === email);
+    }
+    if (!roommate) return;
 
-const data = [
-  { name: 'John Doe', courseDuration: '3 months', homeTown: 'New York', dietaryPreference: 'Vegan', drink: 'Water', smoke: 'No', cleanliness: 8, budget: 500, identification: 'Passport', cook: 'Yes', age: 25, degree: 'BSc', major: 'Computer Science', gender: 'Female' },
-  { name: 'Jane Smith', courseDuration: '6 months', homeTown: 'Los Angeles', dietaryPreference: 'Vegetarian', drink: 'Coffee', smoke: 'Yes', cleanliness: 7, budget: 700, identification: 'ID Card', cook: 'No', age: 28, degree: 'BA', major: 'Economics', gender: 'Male' },
-  { name: 'Alice Brown', courseDuration: '1 year', homeTown: 'Chicago', dietaryPreference: 'Non-Vegetarian', drink: 'Juice', smoke: 'No', cleanliness: 9, budget: 1000, identification: 'Driving License', cook: 'Yes', age: 30, degree: 'MA', major: 'Business Administration', gender: 'Female' },
-  // Add more rows as needed...
-];
+    const payload = {
+      user_email: props.userId, // User email from props
+      fav_email: roommate.email, // Assuming email field in data
+      add_fav: roommate.isFav ? false : "True",
+    };
+
+    axios
+      .post("http://localhost:5000/user/favourites", payload)
+      .then((response) => {
+        if (response.status === 200) {
+          if (param === "1") {
+            setTopRoommates((prevRoommates) =>
+              prevRoommates.map((r) =>
+                r.email === email ? { ...r, isFav: !r.isFav } : r
+              )
+            );
+          } else {
+            setUsers((prevUsers) =>
+              prevUsers.map((r) =>
+                r.email === email ? { ...r, isFav: !r.isFav } : r
+              )
+            );
+          }
+        } else {
+          console.error("Failed to update favorite status:", response.data.message);
+        }
+      })
+      .catch((error) => console.error("Error marking as favorite:", error));
+  };
+
+
+  const handleViewProfile = async (email) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/user-details/${email}`);
+      const data = await response.json();
+      setSelectedUser(data); // Update userData with the response
+      setModalShow(true); // Show the modal
+
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  
+  // const handleViewProfile = (email) => {
+  //   axios
+  //     .get(`http://127.0.0.1:5000/user/profile/${email}`)
+  //     .then((response) => {
+  //       setSelectedUser(response.data); // Set selected user data
+  //       setModalShow(true); // Show the modal
+  //     })
+  //     .catch((error) => console.error("Error fetching user profile:", error));
+  // };
+
+  useEffect(() => {
+    // Fetching top roommates from API
+    axios
+      .get("http://127.0.0.1:5000/rs/top-match", {
+        params: { email: props.userId },
+      })
+      .then((response) => {
+        setTopRoommates(response.data);
+      })
+      .catch((error) => console.error("Error fetching top roommates:", error));
+
+    // Fetching user data from local JSON
+    axios
+      .get("/user_profile_data.json")
+      .then((response) => setUsers(response.data))
+      .catch((error) => console.error("Error loading the user data:", error));
+  }, []);
 
   return (
     <>
       {props.isLoggedIn ? (
         <>
           <section className="speciality" id="speciality">
-            <h3 class="heading">
-              {" "}
-              Top 5 <span>Suggestions</span>{" "}
+            <h3 className="heading">
+              Top 5 <span>Suggestions</span>
             </h3>
 
-            <div class="box-container">
-              {topRoommates.map((roommate, index) => (
-                <div className="main-box">
-                  <div className="box" key={index}>
+            <div className="box-container">
+              {topRoommates.length!=0? topRoommates.map((roommate, index) => (
+                <div className="main-box" key={index}>
+                  <div className="box">
                     <img
                       className="image"
-                      src={roommate.img}
+                      src={roommate.photoUrl}
                       alt={roommate.userName}
                     />
                     <div className="content">
-                      <h5>{roommate.userName} | {roommate.age}</h5>
-                      <p>{roommate.description}</p>
+                      <h5>
+                        {roommate.name} | {roommate.age}
+                      </h5>
+                      <p>{roommate.title}</p>
                     </div>
                   </div>
                   <div className="actions-btn-div">
-                    <Button className="custom-action-btn"><FontAwesomeIcon icon={faStarRegular} style={{ color: '#ffbe0b' }}/></Button>
-                    <Button className="custom-action-btn"><FontAwesomeIcon icon={faMessage} style={{ color: '#ffbe0b' }}/></Button>
-                    <Button className="custom-action-btn"><FontAwesomeIcon icon={faEye} style={{ color: '#ffbe0b' }}/></Button>
+                    <Button
+                      className="custom-action-btn"
+                      onClick={() => markAsFavourite(roommate.email, "1")}
+                    >
+                      {roommate.isFav ? (
+                        <FontAwesomeIcon
+                          icon={faStarSolid}
+                          style={{ color: "white" }}
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faStarRegular}
+                          style={{ color: "white" }}
+                        />
+                      )}
+                    </Button>
+                    <Button className="custom-action-btn">
+                      <FontAwesomeIcon
+                        icon={faMessage}
+                        style={{ color: "white" }}
+                      />
+                    </Button>
+                    <Button className="custom-action-btn">
+                      <FontAwesomeIcon icon={faEye} style={{ color: "white" }} onClick={() => handleViewProfile(roommate.email)} />
+                    </Button>
                   </div>
                 </div>
-              ))}
+              )):<>No recommended roommates found</>}
             </div>
           </section>
-          <section className="speciality">
-            {/* <TableWithPagination data={roommateList} columns={columns} itemsPerPage={5} /> */}
-            <AdvancedFilterGrid columns={columns} data={data} />
 
+          <section className="speciality">
+            {users ? (
+              <UserList users={users} markAsFavourite={markAsFavourite} handleViewProfile={handleViewProfile}/>
+            ) : (
+              <p>Loading users...</p>
+            )}
           </section>
-          
         </>
       ) : (
         <></>
       )}
+
+      {/* Modal to show profile */}
+      <Modal size="lg" show={modalShow} onHide={() => setModalShow(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedUser ? (
+            <Profile userData={selectedUser} mode="view" />
+          ) : (
+            <p>Loading profile...</p>
+          )}
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

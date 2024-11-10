@@ -1,0 +1,77 @@
+.profile-image {
+    width: 100%;
+    height: 100%;
+}
+
+.user-profile {
+    margin-right: 5rem;
+    margin-left: 5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-gap: 2rem;
+}
+
+.profile-header {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+}
+
+.social-btn-div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 5px;
+  }
+  
+  .custom-social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .social-div {
+    display: grid;
+    margin-right: 2rem;
+    width: 13vw;
+    height: 13vh;
+  }
+
+  .middle-div {
+    width: 50%;
+  }
+
+  .separator {
+    width: 1px;
+    background-color: #ccc; /* Color of the separator line */
+    height: 100%; /* Fill the height of the container */
+    margin: 0 10px; /* Optional: Adds space between the divs */
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+
+  .basic-info-div {
+    display: flex;
+  }
+
+  .potential-roommate-section {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    max-height: 70vh;
+    overflow-y: scroll;
+  }
+
+  .potential-roommate-section section {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+    padding: 1rem;
+  }
+
+  .preferences-section {
+
+  }
+
+  .favourites-section {
+
+  }

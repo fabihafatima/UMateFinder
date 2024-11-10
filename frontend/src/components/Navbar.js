@@ -13,6 +13,7 @@ const Navbar = ({
   setUserId,
   password,
   setPassword,
+  userData
 }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -136,7 +137,7 @@ const Navbar = ({
             </div>
           ) : (
             <>
-            <span className="custom-nav-link welcome-msg">Welcome {userId}</span>
+            <span className="custom-nav-link welcome-msg">Welcome {userData.name}</span>
             <Button
                 className="custom-btn"
                 variant="outline-primary"

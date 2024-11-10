@@ -13,6 +13,24 @@ const App = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
+
+  // API call when userId changes
+  useEffect(() => {
+    if (userId) {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(`http://127.0.0.1:5000/user-details/${userId}`);
+          const data = await response.json();
+          setUserData(data); // Update userData with the response
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [userId]); // Runs every time userId changes
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -23,23 +41,33 @@ const App = () => {
 
   return (
     <>
-    {loading && <Loader />}
+      {loading && <Loader />}
       <Router>
-      {!loading && (
-        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} userId={userId} setUserId={setUserId} password={password} setPassword={setPassword}/>
-      )}
+        {!loading && (
+          <Navbar
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            userId={userId}
+            setUserId={setUserId}
+            password={password}
+            setPassword={setPassword}
+            userData={userData}
+          />
+        )}
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile isLoggedIn={isLoggedIn}/>} />
-            <Route path="/browse" element={<Browse isLoggedIn={isLoggedIn}/>} />
-            <Route path="/signup" element={<SignUp/>} />
+            <Route path="/profile" element={<Profile isLoggedIn={isLoggedIn} userData={userData} mode="edit"/>} />
+            <Route path="/browse" element={<Browse isLoggedIn={isLoggedIn} userId={userId}/>} />
+            <Route path="/signup" element={<SignUp isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            userId={userId}
+            setUserId={setUserId}/>} />
           </Routes>
         </div>
       </Router>
     </>
-
   );
-}
+};
 
 export default App;

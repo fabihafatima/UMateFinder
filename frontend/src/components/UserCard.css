@@ -1,0 +1,29 @@
+.user-photo img{
+    width: 10rem !important;
+    height: 10rem !important;
+}
+
+.user-card {
+    display: grid;
+    grid-template-columns: 1fr 10fr 1fr;
+}
+
+.info-gender {
+    color: grey;
+    font-weight: lighter;
+}
+
+.info-start {
+    color: darkgray;
+    font-size: medium;
+}
+
+.actions-btn-div-new {
+    display: grid;
+    grid-gap: 0.8rem;
+}
+
+.custom-action-btn-new {
+    background: none !important;
+    border: 1.5px solid  #ffd600   !important;
+}

@@ -153,16 +153,16 @@ const TableWithPagination = ({
               <td>
                 <div className="actions-btn-div">
                   <Button className="custom-action-btn">
-                    <FontAwesomeIcon icon={faStar} style={{ color: "#ffbe0b" }} />
+                    <FontAwesomeIcon icon={faStar} style={{ color: "#ffd600" }} />
                   </Button>
                   <Button className="custom-action-btn">
                     <FontAwesomeIcon
                       icon={faMessage}
-                      style={{ color: "#ffbe0b" }}
+                      style={{ color: "#ffd600" }}
                     />
                   </Button>
                   <Button className="custom-action-btn">
-                    <FontAwesomeIcon icon={faEye} style={{ color: "#ffbe0b" }} />
+                    <FontAwesomeIcon icon={faEye} style={{ color: "#ffd600" }} />
                   </Button>
                 </div>
               </td>

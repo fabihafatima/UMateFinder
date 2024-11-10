@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -14,7 +14,8 @@ const SignUp = () => {
     major: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    phone: ''
   });
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -66,11 +67,15 @@ const SignUp = () => {
 
     try {
       // Sending signup data to the backend
-      const response = await axios.post('http://localhost:8081/signup', formData);
-
+      const response = await axios.post('http://localhost:5000/user/insert', formData);
+      console.log(response)
       // Handle success response (status 201)
-      if (response.status === 201) {
+      if (response.status === 200) {
         console.log('Signup successful:', response.data);
+        props.setUserId(formData.email)
+        props.setIsLoggedIn(true)
+        console.log("added")
+        navigate("/")
         // Redirect to login or another page on successful signup
       }
     } catch (error) {
@@ -219,6 +224,19 @@ const SignUp = () => {
             onChange={handleInputChange}
           />
           {formErrors.email && <small className="text-danger">{formErrors.email}</small>}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="phone" className="form-label">Phone Number</label>
+          <input
+            type="tel"
+            className="form-control"
+            id="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            pattern="[0-9]{10}" // Optional pattern for phone validation (10 digits)
+            placeholder="Enter 10-digit phone number"
+          />
+          {formErrors.phone && <small className="text-danger">{formErrors.phone}</small>}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">Password</label>

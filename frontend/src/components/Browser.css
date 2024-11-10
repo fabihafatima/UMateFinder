@@ -14,7 +14,7 @@
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
   border:.1rem solid rgba(0,0,0,.3);
   border-radius: .5rem;
-
+  background-color: #ffd600;
 }
 
 .speciality .box-container .main-box .actions-btn-div {
@@ -53,7 +53,7 @@
 
 .speciality .box-container .box .content{
   text-align: center;
-  background:#fff;
+  background:#ffd600;
   padding:1.7rem;
 }
 
@@ -99,7 +99,7 @@ table tbody tr{
 
 .custom-action-btn{
   background: none !important;
-  border: 1px solid  #ffbe0b   !important;
+  border: 1.5px solid  white   !important;
 }
 
 .page-link {
@@ -107,6 +107,16 @@ table tbody tr{
 }
 
 .pagination .active>.page-link {
-  background-color: #ffbe0b   !important;
-  border: 1px solid  #ffbe0b   !important;
+  background-color: #ffd600   !important;
+  border: 1px solid  #ffd600   !important;
+}
+
+.apply-filter-div{
+  display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.user-card-col {
+  padding: 0px;
 }

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app
-from datetime import datetime
+
 # Define blueprint for recommendation system
 rs_bp = Blueprint('rs_bp', __name__, url_prefix='/rs')
 
@@ -75,7 +75,7 @@ def get_top_matches():
                         "location": roommate_profile.get("preference", {}).get("location", []),
                         "gender": roommate_login.get("gender", "other"),
                         "isFav": roommate_email in favourite_roommates,
-                        "photoUrl": roommate_profile.get("photoUrl", ""),
+                        "photoUrl": roommate_profile.get("photoUrl", "https://profile-photos-1.s3.us-east-2.amazonaws.com/default.jpg"),
                     }
                     matched_roommates.append(matched_roommate)
 

@@ -59,9 +59,11 @@ def post_preferences():
         ]
         profile_data = {key: data[key] for key in profile_fields if key in data}
 
+        #call recommendation model and store return for recommendationRoomates
         # Get MongoDB collections
         profile_collection = db['user_profile_data']
         login_collection = db['user_login_data']
+
 
         # Upsert for login data
         login_collection.update_one(

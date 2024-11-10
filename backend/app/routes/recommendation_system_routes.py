@@ -1,7 +1,18 @@
 from flask import Blueprint, request, jsonify, current_app
-
+from datetime import datetime
 # Define blueprint for recommendation system
 rs_bp = Blueprint('rs_bp', __name__, url_prefix='/rs')
+
+def format_date(date_str):
+    """
+    Converts a date string from 'YYYY-MM-DD' to 'MMM-YYYY' format.
+    If the input is invalid or empty, returns an empty string.
+    """
+    try:
+        date = datetime.strptime(date_str, "%Y-%m-%d")
+        return date.strftime("%b-%Y")
+    except (ValueError, TypeError):
+        return ""  # Return empty string if the date format is incorrect or missing
 
 @rs_bp.route('/top-match', methods=['GET'])
 def get_top_matches():
@@ -40,12 +51,14 @@ def get_top_matches():
         # Create a list to store the matching roommate data
         matched_roommates = []
         for roommate_email in top_recommended_roommates:
+            
             # Fetch the profile data of each recommended roommate
             roommate_profile = profile_collection.find_one(
                 {"email": roommate_email},
                 { "email": 1, "age": 1, "startDate": 1, "title": 1, "preference.location": 1}
             )
             if roommate_profile:
+                formatted_start_date = format_date(roommate_profile.get("startDate", ""))
                 # Fetch the name and gender from user_login_data for each recommended roommate
                 roommate_login = login_collection.find_one(
                     {"email": roommate_email},
@@ -57,7 +70,7 @@ def get_top_matches():
                         "email": roommate_profile.get("email", ""),
                         "name": roommate_login.get("name", ""),
                         "age": roommate_profile.get("age", ""),
-                        "startDate": roommate_profile.get("startDate", ""),
+                        "startDate": formatted_start_date,
                         "title": roommate_profile.get("title", ""),
                         "location": roommate_profile.get("preference", {}).get("location", []),
                         "gender": roommate_login.get("gender", "other"),

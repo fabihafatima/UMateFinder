@@ -67,7 +67,7 @@ const SignUp = (props) => {
 
     try {
       // Sending signup data to the backend
-      const response = await axios.post('http://localhost:5000/user/insert', formData);
+      const response = await axios.post('http://localhost:5050/user/insert', formData);
       console.log(response)
       // Handle success response (status 201)
       if (response.status === 200) {

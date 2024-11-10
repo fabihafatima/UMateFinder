@@ -17,7 +17,7 @@ const UserCard = ({ user, markAsFavourite, onChat, handleViewProfile  }) => {
     title,
     startDate,
     locations,
-    isFavourite,
+    isFav,
     budget,
     dietaryPreference,
     drink,
@@ -54,7 +54,7 @@ const UserCard = ({ user, markAsFavourite, onChat, handleViewProfile  }) => {
         <Button className="custom-action-btn-new" onClick={() => {markAsFavourite(email,2);
           console.log("Clicked")
         }}>
-          {isFavourite ? (
+          {isFav ? (
             <FontAwesomeIcon icon={faStarSolid} style={{ color: "#ffd600" }} />
           ) : (
             <FontAwesomeIcon

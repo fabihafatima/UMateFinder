@@ -70,16 +70,6 @@ const Browse = (props) => {
       console.error("Error fetching user data:", error);
     }
   };
-  
-  // const handleViewProfile = (email) => {
-  //   axios
-  //     .get(`http://127.0.0.1:5000/user/profile/${email}`)
-  //     .then((response) => {
-  //       setSelectedUser(response.data); // Set selected user data
-  //       setModalShow(true); // Show the modal
-  //     })
-  //     .catch((error) => console.error("Error fetching user profile:", error));
-  // };
 
   useEffect(() => {
     // Fetching top roommates from API
@@ -94,9 +84,18 @@ const Browse = (props) => {
 
     // Fetching user data from local JSON
     axios
-      .get("/user_profile_data.json")
-      .then((response) => setUsers(response.data))
-      .catch((error) => console.error("Error loading the user data:", error));
+      .get("http://127.0.0.1:5000/rs/other-mates", {
+        params: { email: props.userId },
+      })
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => console.error("Error fetching other potential mates:", error));
+
+    // axios
+    //   .get("/user_profile_data.json")
+    //   .then((response) => setUsers(response.data))
+    //   .catch((error) => console.error("Error loading the user data:", error));
   }, []);
 
   return (

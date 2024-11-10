@@ -8,21 +8,21 @@ import {
   faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Col } from "react-bootstrap";
 import "./Profile.css";
 import UserCard from "./UserCard";
-import axios from "axios";
 
-const Profile = ({ userData, mode }) => {
+const Profile = (props) => {
   const [favouriteRoommates, setFavouriteRoommates] = useState([]);
   useEffect(() => {
-    // Check if userData and email are available before calling the API
-    if (userData && userData.email) {
+    // Check if props.userData and email are available before calling the API
+    if (props.userData && props.userData.email) {
       // Replace with your API endpoint and include email as a query parameter
       axios
         .get(
-          `http://127.0.0.1:5000/user/favourite-roommates?email=${userData.email}`
+          `http://127.0.0.1:5000/user/favourite-roommates?email=${props.userData.email}`
         )
         .then((response) => {
           setFavouriteRoommates(response.data); // Assuming API response has `roommates` array
@@ -31,20 +31,22 @@ const Profile = ({ userData, mode }) => {
           console.error("Error fetching favourite roommates:", error);
         });
     }
-  }, [userData]);
+  }, [props.userData]);
 
   return (
     <div className="user-profile">
       <div className="profile-header">
         <div className="social-div">
           <img
-            src={userData.photoUrl ? userData.photoUrl : "/logo.jpg"}
+            src={
+              props.userData.photoUrl ? props.userData.photoUrl : "/logo.jpg"
+            }
             alt="Profile"
             className="profile-image"
           />
           <div className="social-btn-div">
-            {userData.socialMedia &&
-              userData.socialMedia.map((social, index) => (
+            {props.userData.socialMedia &&
+              props.userData.socialMedia.map((social, index) => (
                 <a
                   key={index}
                   href={social.url}
@@ -70,21 +72,21 @@ const Profile = ({ userData, mode }) => {
         </div>
         <div className="basic-info-div">
           <div className="middle-div">
-            <h2>{userData.title}</h2>
+            <h2>{props.userData.title}</h2>
             <p>
-              {userData.age} years old | {userData.gender}
+              {props.userData.age} years old | {props.userData.gender}
             </p>
             <p>
-              Here for a {userData.degree} in {userData.major} for{" "}
-              {userData.courseDuration} years
+              Here for a {props.userData.degree} in {props.userData.major} for{" "}
+              {props.userData.courseDuration} years
             </p>
             <p>
-              From <strong>{userData.homeTown}</strong>
+              From <strong>{props.userData.homeTown}</strong>
             </p>
             <br />
             <div>
               <p>
-                {userData.isRoommateFound
+                {props.userData.isRoommateFound
                   ? "You’ve found a roommate!"
                   : "Still on the hunt!"}
               </p>
@@ -94,18 +96,19 @@ const Profile = ({ userData, mode }) => {
           <section>
             <h3>More info:</h3>
             <p>
-              <strong>Budget:</strong> ${userData.budget}/month
+              <strong>Budget:</strong> ${props.userData.budget}/month
             </p>
             <p>
-              <strong>Cleanliness:</strong> {userData.cleanliness}
+              <strong>Cleanliness:</strong> {props.userData.cleanliness}
             </p>
             <p>
-              <strong>Dietary Preference:</strong> {userData.dietaryPreference}
+              <strong>Dietary Preference:</strong>{" "}
+              {props.userData.dietaryPreference}
             </p>
             <p>
               <span>
                 <strong>Drink:</strong>{" "}
-                {userData.drink ? (
+                {props.userData.drink ? (
                   <FontAwesomeIcon icon={faSquareCheck} />
                 ) : (
                   <FontAwesomeIcon icon={faSquareXmark} />
@@ -113,7 +116,7 @@ const Profile = ({ userData, mode }) => {
               </span>
               <span>
                 <strong>Smoke:</strong>{" "}
-                {userData.smoke ? (
+                {props.userData.smoke ? (
                   <FontAwesomeIcon icon={faSquareCheck} />
                 ) : (
                   <FontAwesomeIcon icon={faSquareXmark} />
@@ -122,10 +125,10 @@ const Profile = ({ userData, mode }) => {
             </p>
             <p>
               <strong>Hobbies:</strong>{" "}
-              {userData.hobbies && userData.hobbies.join(", ")}
+              {props.userData.hobbies && props.userData.hobbies.join(", ")}
             </p>
             <p>
-              <strong>Cooking:</strong> {userData.cook ? "Yes" : "No"}
+              <strong>Cooking:</strong> {props.userData.cook ? "Yes" : "No"}
             </p>
           </section>
         </div>
@@ -134,30 +137,31 @@ const Profile = ({ userData, mode }) => {
       <div className="potential-roommate-section">
         <section className="preferences-section">
           <h5>Potential Roommate Preferences</h5>
-          {userData.preference ? (
+          {props.userData.preference ? (
             <>
               <p>
-                <strong>Preferred Gender:</strong> {userData.preference.gender}
+                <strong>Preferred Gender:</strong>{" "}
+                {props.userData.preference.gender}
               </p>
               <p>
                 <strong>Preferred Location:</strong>{" "}
-                {userData.preference.location.join(", ")}
+                {props.userData.preference.location.join(", ")}
               </p>
               <p>
                 <strong>Preferred Dietary Preference:</strong>{" "}
-                {userData.preference.dietaryPreference}
+                {props.userData.preference.dietaryPreference}
               </p>
               <p>
                 <strong>Number of Roommates:</strong>{" "}
-                {userData.preference.numberOfRoommates}
+                {props.userData.preference.numberOfRoommates}
               </p>
               <p>
                 <strong>Room Preference:</strong>{" "}
-                {userData.preference.roomPreference}
+                {props.userData.preference.roomPreference}
               </p>
               <p>
                 <strong>Open to Drink:</strong>{" "}
-                {userData.preference.openToDrink ? (
+                {props.userData.preference.openToDrink ? (
                   <FontAwesomeIcon icon={faSquareCheck} />
                 ) : (
                   <FontAwesomeIcon icon={faSquareXmark} />
@@ -165,7 +169,7 @@ const Profile = ({ userData, mode }) => {
               </p>
               <p>
                 <strong>Open to Smoke:</strong>{" "}
-                {userData.preference.openToSmoke ? (
+                {props.userData.preference.openToSmoke ? (
                   <FontAwesomeIcon icon={faSquareCheck} />
                 ) : (
                   <FontAwesomeIcon icon={faSquareXmark} />
@@ -176,26 +180,28 @@ const Profile = ({ userData, mode }) => {
             <>No preferences have been set</>
           )}
         </section>
-          {
-            mode==="edit"? <section className="favourites-section">
+        {props.mode === "edit" ? (
+          <section className="favourites-section">
             <h3>My Favourites</h3>
             {favouriteRoommates.length > 0 ? (
               favouriteRoommates.map((user, index) => (
                 <Col key={user.name} md={12} className="mb-4">
                   <UserCard
                     user={user}
-                    onFavorite={() => console.log(`Favorite ${user.name}`)}
+                    mode="userProfile"
+                    markAsFavourite={props.markAsFavourite}
+                    handleViewProfile={props.handleViewProfile}
                     onChat={() => console.log(`Chat with ${user.name}`)}
-                    onView={() => console.log(`View ${user.name}`)}
                   />
                 </Col>
               ))
             ) : (
               <p>Loading favorite roommates...</p>
             )}
-          </section>:<></>
-          }
-        
+          </section>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

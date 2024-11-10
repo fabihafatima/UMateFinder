@@ -177,7 +177,7 @@ const Browse = (props) => {
         </Modal.Header>
         <Modal.Body>
           {selectedUser ? (
-            <Profile userData={selectedUser} mode="view" />
+            <Profile userData={selectedUser} mode="view" markAsFavourite={markAsFavourite} handleViewProfile={handleViewProfile}/>
           ) : (
             <p>Loading profile...</p>
           )}

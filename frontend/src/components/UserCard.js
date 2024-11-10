@@ -9,7 +9,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import "./UserCard.css"; // You can style the loader here
 
-const UserCard = ({ user, markAsFavourite, onChat, handleViewProfile  }) => {
+const UserCard = ({ user, mode, markAsFavourite, handleViewProfile , onChat }) => {
   const {
     name,
     age,
@@ -51,10 +51,10 @@ const UserCard = ({ user, markAsFavourite, onChat, handleViewProfile  }) => {
 
       {/* Third section - Action Buttons */}
       <div className="actions-btn-div-new">
-        <Button className="custom-action-btn-new" onClick={() => {markAsFavourite(email,2);
+        <Button className="custom-action-btn-new" onClick={() => {console.log(user);markAsFavourite(email,2);
           console.log(user)
         }}>
-          {isFav ? (
+          {isFav || mode === "userProfile"? (
             <FontAwesomeIcon icon={faStarSolid} style={{ color: "#ffd600" }} />
           ) : (
             <FontAwesomeIcon

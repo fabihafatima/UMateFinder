@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <header className="header-section">
-        <h1>Welcome to Bumble for Roommates</h1>
+        <h1>Welcome to UMate</h1>
         <h3>Your Perfect Roommate Match Awaits</h3>
         <p>Ever struggled to find the right roommate? With UMate, your search for the perfect roommate is just a swipe away!</p>
         <p>Whether you're a student looking for a place to stay off-campus or simply seeking a roommate who matches your preferences, UMate makes it easy to find your ideal living companion.</p>

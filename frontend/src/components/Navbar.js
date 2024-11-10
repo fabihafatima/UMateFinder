@@ -98,7 +98,7 @@ const Navbar = ({
       <div className="container custom-nav">
         <Link className="navbar-brand" to="/">
           <img className="logo-class" src="/logo.jpg" alt="Loading..." />
-          <span className="highlight-class">Bumble</span><span className="non-highlight-class"> for Roommates</span>
+          <span className="main-app-name">UMate | </span><span className="highlight-class">Bumble</span><span className="non-highlight-class"> for Roommates</span>
         </Link>
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">

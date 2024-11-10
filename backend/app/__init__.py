@@ -24,7 +24,9 @@ def create_app():
 
     from .routes import user_bp
     from .routes import preference_bp
+    from .routes import all_users_bp
     app.register_blueprint(user_bp)
     app.register_blueprint(preference_bp)
+    app.register_blueprint(all_users_bp)
 
     return app

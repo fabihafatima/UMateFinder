@@ -52,7 +52,7 @@ const UserCard = ({ user, markAsFavourite, onChat, handleViewProfile  }) => {
       {/* Third section - Action Buttons */}
       <div className="actions-btn-div-new">
         <Button className="custom-action-btn-new" onClick={() => {markAsFavourite(email,2);
-          console.log("Clicked")
+          console.log(user)
         }}>
           {isFav ? (
             <FontAwesomeIcon icon={faStarSolid} style={{ color: "#ffd600" }} />
@@ -66,7 +66,7 @@ const UserCard = ({ user, markAsFavourite, onChat, handleViewProfile  }) => {
         <Button className="custom-action-btn-new">
           <FontAwesomeIcon icon={faMessage} style={{ color: "#ffd600" }} />
         </Button>
-        <Button className="custom-action-btn-new" onClick={() => handleViewProfile(email,2)}>
+        <Button className="custom-action-btn-new" onClick={() => handleViewProfile(email)}>
           <FontAwesomeIcon icon={faEye} style={{ color: "#ffd600" }} />
         </Button>
       </div>

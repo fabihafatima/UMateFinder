@@ -24,10 +24,12 @@ const Browse = (props) => {
     if (param === "1") {
       roommate = topRoommates.find((r) => r.email === email);
     } else {
-      roommate = users.find((r) => r.name === email);
+      console.log("entered")
+      roommate = users.find((r) => r.email === email);
     }
     if (!roommate) return;
-
+    console.log("moved")
+    console.log(roommate)
     const payload = {
       user_email: props.userId, // User email from props
       fav_email: roommate.email, // Assuming email field in data
@@ -41,14 +43,18 @@ const Browse = (props) => {
           if (param === "1") {
             setTopRoommates((prevRoommates) =>
               prevRoommates.map((r) =>
-                r.email === email ? { ...r, isFav: !r.isFav } : r
+                r.email === roommate.email ? { ...r, isFav: !r.isFav } : r
               )
             );
           } else {
             setUsers((prevUsers) =>
-              prevUsers.map((r) =>
-                r.email === email ? { ...r, isFav: !r.isFav } : r
-              )
+              prevUsers.map((r) => {
+                if (r.email === roommate.email) {
+                  console.log("User found:", r); // Log the user when found
+                  return { ...r, isFav: !r.isFav };
+                }
+                return r;
+              })
             );
           }
         } else {
@@ -91,12 +97,13 @@ const Browse = (props) => {
         setUsers(response.data);
       })
       .catch((error) => console.error("Error fetching other potential mates:", error));
-
-    // axios
-    //   .get("/user_profile_data.json")
-    //   .then((response) => setUsers(response.data))
-    //   .catch((error) => console.error("Error loading the user data:", error));
   }, []);
+
+  useEffect(() => {
+    console.log("Changed users")
+    const user = users && users.find(user => user.email === "timothy@getmearoommate.com");
+    console.log(user)
+  },[users])
 
   return (
     <>

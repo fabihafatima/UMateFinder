@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Pagination } from 'react-bootstrap';
 import UserCard from './UserCard';
 
@@ -46,6 +46,10 @@ const UserList = (props) => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  useEffect(() => {
+    setFilteredUsers(props.users)
+  },[props.users])
 
   return (
     <Container>

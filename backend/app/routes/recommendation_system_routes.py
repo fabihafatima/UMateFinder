@@ -61,7 +61,7 @@ def get_top_matches():
                         "title": roommate_profile.get("title", ""),
                         "location": roommate_profile.get("preference", {}).get("location", []),
                         "gender": roommate_login.get("gender", "other"),
-                        "add_fav": roommate_email in favourite_roommates
+                        "isFav": roommate_email in favourite_roommates
                     }
                     matched_roommates.append(matched_roommate)
 

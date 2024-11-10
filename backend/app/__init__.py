@@ -22,11 +22,10 @@ def create_app():
     # user_profile_collection = db.user_profile_data
     # user_login_collection = db.user_login_data
 
-    from .routes import user_bp
-    from .routes import preference_bp
-    from .routes import all_users_bp
+    from .routes import user_bp, preference_bp, all_users_bp, rs_bp
     app.register_blueprint(user_bp)
     app.register_blueprint(preference_bp)
     app.register_blueprint(all_users_bp)
+    app.register_blueprint(rs_bp)
 
     return app

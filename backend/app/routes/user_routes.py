@@ -25,7 +25,7 @@ def validate_user():
 def insert_user():
     db = current_app.config["db"]
     users_collection = db.user_login_data
-    required_fields = ["name", "email", "password", "phone", "degree", "dob", "gender", "major"]  # Define required fields as needed
+    required_fields = ["name", "email", "password", "phone", "degree", "age", "gender", "major"]  # Define required fields as needed
     data = request.json
     for field in required_fields:
         if field not in data:
@@ -62,17 +62,15 @@ def get_favourite_user():
         return jsonify({"message": "Favourite Deleted!"}), 200
 
 # Retrieving favourite roommates data for one particular user to show on user profile
-@user_bp.route('/favourite_roommates', methods=['GET'])
+@user_bp.route('/favourite-roommates', methods=['GET'])
 def get_roommate_names():
     db = current_app.config["db"]
     users_login = db["user_login_data"]
     users_profiles = db["user_profile_data"]
-    required_fields = ["email"]  # Define required fields as needed
-    data = request.json
-    for field in required_fields:
-        if field not in data:
-            return jsonify({"error": f"{field} is required"}), 400
-    user_details = users_profiles.find_one({"email": data["email"]})
+    email = request.args.get("email")
+    if not email:
+        return jsonify({"error": "Email parameter is required"}), 400
+    user_details = users_profiles.find_one({"email": email})
 
     final_data=[]
     fav_names_data = {}
@@ -80,6 +78,7 @@ def get_roommate_names():
         roommate_login_data = users_login.find_one({"email": item})
         fav_names_data["name"] = roommate_login_data["name"]
         fav_names_data["gender"] = roommate_login_data["gender"]
+        fav_names_data["phone"] = roommate_login_data["phone"]
         roommate_profile_data = users_profiles.find_one({"email": item})
         fav_names_data["age"] = roommate_profile_data["age"]
         fav_names_data["startDate"] = roommate_profile_data["startDate"]
@@ -126,10 +125,10 @@ def get_roommate_names():
 #     except Exception as e:
 #         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-# curl -X POST -H "Content-Type: application/json" -d '{"name": "Naman","email": "nmn@getmearoommate.com", "password": "abcd","phone":"1772756941","degree":"Master’s","dob":"1999-10-06","gender":"male","major":"Economics"}' http://127.0.0.1:5000/user/insert
-# curl -X POST -H "Content-Type: application/json" -d '{"email": "mustafa@getmearoommate.com", "password": "test@123"}' http://127.0.0.1:5000/user/validate
-# curl -X POST -H "Content-Type: application/json" -d '{"user_email": "admin@umass.edu", "fav_email": "patrick@getmearoommate.com","add_fav": "False"}' http://127.0.0.1:5000/user/favourites
-# curl -X GET -H "Content-Type: application/json" http://127.0.0.1:5000/all_users/data
-# curl -X GET -H "Content-Type: application/json" -d '{"email": "admin@umass.edu"}' http://127.0.0.1:5000/user/favourite_roommates
-# curl -X GET -H "Content-Type: application/json" -d '{"email": "nancy@getmearoommate.com"}' http://127.0.0.1:5000/user/favourite_roommates
-# curl -X POST -H "Content-Type: application/json" http://127.0.0.1:5000/user/update_collection
+# curl -X POST -H "Content-Type: application/json" -d '{"name": "Naman","email": "nmn@getmearoommate.com", "password": "abcd","phone":"1772756941","degree":"Master’s","dob":"1999-10-06","gender":"male","major":"Economics"}' http://127.0.0.1:5000/user/insert | python3 -m json.tool
+# curl -X POST -H "Content-Type: application/json" -d '{"email": "mustafa@getmearoommate.com", "password": "test@123"}' http://127.0.0.1:5000/user/validate | python3 -m json.tool
+# curl -X POST -H "Content-Type: application/json" -d '{"user_email": "admin@umass.edu", "fav_email": "patrick@getmearoommate.com","add_fav": "False"}' http://127.0.0.1:5000/user/favourites | python3 -m json.tool
+# curl -X GET -H "Content-Type: application/json" http://127.0.0.1:5000/all_users/data | python3 -m json.tool
+# curl -X POST -H "Content-Type: application/json" -d '{"email": "admin@umass.edu"}' http://127.0.0.1:5000/user/favourite_roommates | python3 -m json.tool
+# curl -X POST -H "Content-Type: application/json" -d '{"email": "nancy@getmearoommate.com"}' http://127.0.0.1:5000/user/favourite_roommates | python3 -m json.tool
+# curl -X POST -H "Content-Type: application/json" http://127.0.0.1:5000/user/update_collection | python3 -m json.tool

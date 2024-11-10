@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app
-
+from datetime import datetime
 # Define blueprint for recommendation system
 rs_bp = Blueprint('rs_bp', __name__, url_prefix='/rs')
 

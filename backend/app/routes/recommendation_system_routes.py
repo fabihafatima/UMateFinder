@@ -142,7 +142,7 @@ def get_other_mates():
                     "age": roommate_profile.get("age", ""),
                     "startDate": formatted_start_date,
                     "title": roommate_profile.get("title", ""),
-                    "location": roommate_profile.get("preference", {}).get("location", []),
+                    "locations": roommate_profile.get("preference", {}).get("location", []),
                     "gender": roommate_login.get("gender", "other"),
                     "smoke": roommate_profile.get("smoke", False),
                     "budget": roommate_profile.get("budget", ""),

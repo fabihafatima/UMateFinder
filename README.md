@@ -1,5 +1,5 @@
 # UMate - Bumble for Roommates
-![WhatsApp Image 2024-11-09 at 10 22 56 PM](https://github.com/user-attachments/assets/ad77521f-7a32-4ca9-b6a7-491d6163562d)
+                  ![WhatsApp Image 2024-11-09 at 10 22 56 PM](https://github.com/user-attachments/assets/ad77521f-7a32-4ca9-b6a7-491d6163562d)
 
 Ever had difficulty finding a roommate? Just swipe right and find your perfect match!
 

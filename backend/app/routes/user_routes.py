@@ -30,8 +30,12 @@ def insert_user():
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"{field} is required"}), 400
-    user_id = users_collection.insert_one(data).inserted_id
-    return jsonify({"message": "You have been Signed Up!"}), 200
+    existing_user = users_collection.find_one({"email": data.get("email")})
+    if existing_user:
+        return jsonify({"status": "error", "message": "Email already registered, please Log In!"}), 400
+    else:
+        user_id = users_collection.insert_one(data).inserted_id
+        return jsonify({"message": "You have been Signed Up!"}), 200
 
 # Adding or Deleting a favourite email id in a user according to the add_fav flag
 @user_bp.route('/favourites', methods=['POST'])
@@ -83,7 +87,7 @@ def get_roommate_names():
         fav_names_data["age"] = roommate_profile_data["age"]
         fav_names_data["startDate"] = roommate_profile_data["startDate"]
         fav_names_data["title"] = roommate_profile_data["title"]
-        fav_names_data["location"] = roommate_profile_data["preference"]["location"].copy()
+        fav_names_data["locations"] = roommate_profile_data["preference"]["location"].copy()
         fav_names_data["budget"] = roommate_profile_data["budget"]
         fav_names_data["dietaryPreference"] = roommate_profile_data["dietaryPreference"]
         fav_names_data["drink"] = roommate_profile_data["drink"]
@@ -125,7 +129,7 @@ def get_roommate_names():
 #     except Exception as e:
 #         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-# curl -X POST -H "Content-Type: application/json" -d '{"name": "Naman","email": "nmn@getmearoommate.com", "password": "abcd","phone":"1772756941","degree":"Master’s","dob":"1999-10-06","gender":"male","major":"Economics"}' http://127.0.0.1:5000/user/insert | python3 -m json.tool
+# curl -X POST -H "Content-Type: application/json" -d '{"name": "Naman","email": "nmn@getmearoommate.com", "password": "abcd","phone":"1772756941","degree":"Master’s","age":"45","gender":"male","major":"Economics"}' http://127.0.0.1:5000/user/insert | python3 -m json.tool
 # curl -X POST -H "Content-Type: application/json" -d '{"email": "mustafa@getmearoommate.com", "password": "test@123"}' http://127.0.0.1:5000/user/validate | python3 -m json.tool
 # curl -X POST -H "Content-Type: application/json" -d '{"user_email": "admin@umass.edu", "fav_email": "patrick@getmearoommate.com","add_fav": "False"}' http://127.0.0.1:5000/user/favourites | python3 -m json.tool
 # curl -X GET -H "Content-Type: application/json" http://127.0.0.1:5000/all_users/data | python3 -m json.tool

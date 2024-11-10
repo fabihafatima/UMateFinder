@@ -72,7 +72,7 @@ def get_top_matches():
                         "age": roommate_profile.get("age", ""),
                         "startDate": formatted_start_date,
                         "title": roommate_profile.get("title", ""),
-                        "location": roommate_profile.get("preference", {}).get("location", []),
+                        "locations": roommate_profile.get("preference", {}).get("location", []),
                         "gender": roommate_login.get("gender", "other"),
                         "isFav": roommate_email in favourite_roommates,
                         "phone": roommate_login.get("phone", ""),

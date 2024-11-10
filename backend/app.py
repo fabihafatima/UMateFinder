@@ -11,7 +11,7 @@ def add_cors_headers(response):
     """
     response.headers.update({
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, Origin, X-Requested-With, Accept, X-Filter",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
     })
     return response

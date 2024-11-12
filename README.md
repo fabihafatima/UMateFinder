@@ -145,7 +145,7 @@ Note: Ensure that the backend server is running on http://localhost:5000 (for Ma
 - **Data Processing for Recommendations:** Preparing the data for recommendation was complex, requiring thorough preprocessing of user profiles and preferences. It was essential to clean, standardize, and transform data to accurately align with the compatibility factors used by the recommendation model.
 
 ### Future Scope
-- **Make it live on AppStore**
+- **Deploy it on AWS EC2**
   
 - **Enhanced Matching Algorithm:** We plan to refine the recommendation model by incorporating more personalized factors, such as shared hobbies or specific living preferences, to improve match accuracy and user satisfaction.
   
